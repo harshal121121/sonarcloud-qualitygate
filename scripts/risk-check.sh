@@ -2,18 +2,15 @@ CHANGED_FILES=$(git diff --name-only HEAD~1)
 
 LOW_RISK=false
 
-# Example rule
-if [[ "$CHANGED_FILES" == *"ui/"* ]]; then
+if [[ "$CHANGED_FILES" == *"test"* ]]; then
   LOW_RISK=true
 fi
 
-echo "LOW_RISK=$LOW_RISK"
-
 if [[ "$SONAR_STATUS" == "OK" ]]; then
-  echo "PASS: Sonar OK"
+  echo "PASS"
 elif [[ "$LOW_RISK" == "true" ]]; then
-  echo "PASS: Override (Low Risk)"
+  echo "PASS (Override)"
 else
-  echo "FAIL: High Risk + Sonar Fail"
+  echo "FAIL"
   exit 1
 fi

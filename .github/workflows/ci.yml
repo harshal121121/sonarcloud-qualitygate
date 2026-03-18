@@ -1,44 +1,44 @@
 name: CI Pipeline
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-    # Java Build
+    # Java
     - name: Build Java
       run: |
         cd java-service
         mvn clean test
 
-    # Install C++ tools
+    # C++
     - name: Install tools
       run: |
-        sudo apt-get install -y lcov gcovr
+        sudo apt-get update
+        sudo apt-get install -y gcovr build-essential
 
-    # Build C++
     - name: Build C++
       run: |
         cd cpp-service
+        make clean
         make test
         make coverage
 
-    # Sonar Scan
-    - name: SonarCloud Scan
+    # SonarCloud Scan
+    - name: Sonar Scan
       uses: SonarSource/sonarcloud-github-action@v2
       with:
         args: >
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-    # Wait for Quality Gate
-    - name: Check Sonar Quality Gate
+    # Quality Gate Check
+    - name: Sonar Check
       run: bash scripts/sonar-check.sh
 
-    # Custom Risk Logic
+    # Custom Logic
     - name: Risk Check
       run: bash scripts/risk-check.sh

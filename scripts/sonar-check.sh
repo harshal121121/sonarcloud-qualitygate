@@ -1,7 +1,5 @@
 STATUS=$(curl -s \
-  "https://sonarcloud.io/api/qualitygates/project_status?projectKey=YOUR_KEY" \
-  | jq -r '.projectStatus.status')
-
-echo "Sonar Status: $STATUS"
+"https://sonarcloud.io/api/qualitygates/project_status?projectKey=harshal121121_sonarcloud-qualitygate" \
+| jq -r '.projectStatus.status')
 
 echo "SONAR_STATUS=$STATUS" >> $GITHUB_ENV
